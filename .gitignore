@@ -1,0 +1,44 @@
+# ==========================================
+# 1. Maven Output (Compiled Code & Packages)
+# ==========================================
+target/
+*.jar
+*.war
+*.ear
+*.class
+
+# Maven wrapper temporary files
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# ==========================================
+# 2. IntelliJ IDEA Project Files
+# ==========================================
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# ==========================================
+# 3. Spring Boot Logs & Temp Files
+# ==========================================
+*.log
+logs/
+temp/
+tmp/
+
+# ==========================================
+# 4. OS / System Junk Files
+# ==========================================
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# 5. Local Database & API Credentials
+# ==========================================
+.env
+application-local.properties
+application-local.yml
+application-dev.properties
+application-dev.yml
