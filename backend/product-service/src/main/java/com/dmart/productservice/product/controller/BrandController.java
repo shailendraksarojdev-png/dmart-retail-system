@@ -35,7 +35,7 @@ public class BrandController {
         return ResponseEntity.ok(brandService.getBrandById(id));
     }
 
-    @GetMapping("brands")
+    @GetMapping("allBrands")
     public ResponseEntity<List<BrandResponse>> getAllBrands() {
 
         return ResponseEntity.ok(brandService.getAllBrands());
