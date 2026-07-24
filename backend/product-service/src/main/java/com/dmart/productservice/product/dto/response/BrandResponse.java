@@ -1,7 +1,6 @@
 package com.dmart.productservice.product.dto.response;
 
 import lombok.*;
-import org.hibernate.validator.constraints.Normalized;
 
 @Getter
 @Setter

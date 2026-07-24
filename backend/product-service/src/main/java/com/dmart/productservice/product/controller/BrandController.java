@@ -3,7 +3,6 @@ package com.dmart.productservice.product.controller;
 import com.dmart.productservice.product.dto.request.CreateBrandRequest;
 import com.dmart.productservice.product.dto.request.UpdateBrandRequest;
 import com.dmart.productservice.product.dto.response.BrandResponse;
-import com.dmart.productservice.product.entity.Brand;
 import com.dmart.productservice.product.service.BrandService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
