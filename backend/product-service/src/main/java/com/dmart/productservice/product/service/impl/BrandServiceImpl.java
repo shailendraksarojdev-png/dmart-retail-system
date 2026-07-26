@@ -1,6 +1,7 @@
 package com.dmart.productservice.product.service.impl;
 
 import com.dmart.productservice.product.dto.request.CreateBrandRequest;
+import com.dmart.productservice.product.dto.request.CreateProductRequest;
 import com.dmart.productservice.product.dto.request.UpdateBrandRequest;
 import com.dmart.productservice.product.dto.response.BrandResponse;
 import com.dmart.productservice.product.entity.Brand;
@@ -88,6 +89,11 @@ public class BrandServiceImpl implements BrandService {
         } else {
             throw new RuntimeException("Brand not found");
         }
+    }
+
+    @Override
+    public Brand findBrandByName(CreateProductRequest request) {
+        return null;
     }
     // Implement the methods defined in the BrandService interface
 }

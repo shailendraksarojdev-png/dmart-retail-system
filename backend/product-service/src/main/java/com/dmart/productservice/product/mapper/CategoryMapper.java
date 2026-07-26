@@ -23,15 +23,12 @@ public class CategoryMapper {
     }
 
 
-     public CategoryResponse toResponse(Catagory category){
-       return CategoryResponse.builder()
-               .id(category.getId())
-               .name(category.getName())
-               .description(category.getDescription())
-               .active(category.isActive())
-               .createdAt(category.getCreatedAt().toString())
-               .updatedAt(category.getUpdatedAt().toString())
-               .build();
+     public CategoryResponse toResponse(Catagory request){
+        return CategoryResponse.builder()
+                .name(request.getName())
+                .description(request.getDescription())
+                .active(true)
+                .build();
      }
 
 }

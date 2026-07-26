@@ -1,6 +1,7 @@
 package com.dmart.productservice.product.service.impl;
 
 import com.dmart.productservice.product.dto.request.CreateCategoryRequest;
+import com.dmart.productservice.product.dto.request.CreateProductRequest;
 import com.dmart.productservice.product.dto.request.UpdateCatagoryRequest;
 import com.dmart.productservice.product.dto.response.CategoryResponse;
 import com.dmart.productservice.product.entity.Catagory;
@@ -94,5 +95,10 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteAllCategories() {
         categoryRepository.deleteAll();
 
+    }
+
+    @Override
+    public Catagory findCategoryByName(CreateProductRequest request) {
+        return null;
     }
 }

@@ -1,8 +1,10 @@
 package com.dmart.productservice.product.service;
 
 import com.dmart.productservice.product.dto.request.CreateCategoryRequest;
+import com.dmart.productservice.product.dto.request.CreateProductRequest;
 import com.dmart.productservice.product.dto.request.UpdateCatagoryRequest;
 import com.dmart.productservice.product.dto.response.CategoryResponse;
+import com.dmart.productservice.product.entity.Catagory;
 
 
 import java.util.List;
@@ -26,4 +28,6 @@ public interface CategoryService {
    void deleteCategory(Long id);
 
     void deleteAllCategories();
+
+    Catagory findCategoryByName(CreateProductRequest request);
 }
