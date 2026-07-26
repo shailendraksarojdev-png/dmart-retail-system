@@ -3,14 +3,16 @@ FROM eclipse-temurin:21-jdk-jammy AS builder
 
 WORKDIR /app
 
-# Copy the entire product-service to preserve project layout
-COPY backend/product-service /app
+# Copy parent POM and backend directory to preserve project structure
+COPY pom.xml ./pom.xml
+COPY backend ./backend
 
-# Ensure mvnw is executable
-RUN chmod +x ./mvnw
+# Make mvnw executable in product-service
+RUN chmod +x ./backend/product-service/mvnw
 
-# Build the application using the wrapper (batch mode)
-RUN ./mvnw -f pom.xml clean package -DskipTests -B
+# Build the entire project from root using parent pom
+# This builds all modules and product-service jar will be in backend/product-service/target/
+RUN ./backend/product-service/mvnw -B clean package -DskipTests
 
 # Stage 2: Runtime stage
 FROM eclipse-temurin:21-jre-jammy
@@ -18,7 +20,7 @@ FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
 # Copy the built jar from builder stage
-COPY --from=builder /app/target/*.jar app.jar
+COPY --from=builder /app/backend/product-service/target/*.jar app.jar
 
 # Expose port
 EXPOSE 8080
