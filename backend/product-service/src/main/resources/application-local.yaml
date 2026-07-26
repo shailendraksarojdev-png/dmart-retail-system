@@ -1,0 +1,44 @@
+# Local Development Profile Configuration
+# To run the application with this profile, use one of the following commands:
+#
+# 1. Using Maven:
+#    mvn spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=local"
+#
+# 2. Using Maven wrapper (from product-service directory):
+#    ./mvnw spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=local"
+#
+# 3. Using environment variable:
+#    export SPRING_PROFILES_ACTIVE=local
+#    mvn spring-boot:run
+#
+# 4. Running JAR file:
+#    java -jar target/app.jar --spring.profiles.active=local
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dmart
+    username: shailendrasaroj
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE

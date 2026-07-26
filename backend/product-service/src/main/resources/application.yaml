@@ -3,9 +3,9 @@ spring:
     name: product-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/shailendrasaroj
-    username: shailendrasaroj
-    password: 1234
+    url: jdbc:postgresql://${DB_HOST:postgres}:${DB_PORT:5432}/${DB_NAME:dmart}
+    username: ${DB_USER:shailendrasaroj}
+    password: ${DB_PASSWORD:1234}
     driver-class-name: org.postgresql.Driver
 
   jjpa:
