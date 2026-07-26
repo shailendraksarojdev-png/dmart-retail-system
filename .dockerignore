@@ -1,0 +1,12 @@
+.git
+.gitignore
+.idea
+.DS_Store
+.env
+.env.local
+*.log
+*.swp
+*.iml
+node_modules
+backend/product-service/target
+backend/product-service/.mvn/wrapper/maven-wrapper.jar

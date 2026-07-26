@@ -1,1 +1,61 @@
-name : dmart-retail-system
+name : build and deploy Dmart retail system
+
+on:
+    push:
+      branches:
+        - main
+        - develop
+    pull_request:
+      -branches:
+        - main
+        - develop
+env:
+    IMAGE_NAME: dmart-retail-system
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setting Up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+
+      - name: build jar
+        run: mvn clean package -DskipTests
+
+      - name: building docker image
+        run: docker build -t ${{secrets.DOCKER_USERNAME}}/${{env.IMAGE_NAME}}:latest .
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push image to docker hub
+        run: docker push ${{secrets.DOCKER_USERNAME}}/${{secrets.IMAGE_NAME}}:latest
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@1.2.0
+        with:
+          hostname: ${{secrets.EC2_HOST}}
+          username: ${{secrets.EC2_USER}}
+          key: ${{secrets.EC2_SSH_KEY}}
+          script : |
+            docker pull ${{secrets.DOCKER_USERNAME}}/${{env.IMAGE_NAME}}:latest
+            docker stop ${{secrets.DOCKER_CONTAINER_NAME}} || true
+            docker rm ${{secrets.DOCKER_CONTAINER_NAME}} || true
+            docker run -d --name dmart-retail-system --restart unless-stopped -p 8080:8080  ${{secrets.DOCKER_USERNAME}}/${{env.IMAGE_NAME}}:latest
+            docker image prune -f 
+
+
+
+
+
