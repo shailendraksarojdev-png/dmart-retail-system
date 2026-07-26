@@ -32,7 +32,7 @@ jobs:
         run: mvn clean package -DskipTests
 
       - name: building docker image
-        run: docker build -t ${{secrets.DOCKER_USERNAME}}/${{secrets.IMAGE_NAME}}:latest .
+        run: docker build -t ${{secrets.DOCKER_USERNAME}}/${{vars.IMAGE_NAME}}:latest .
 
       - name: Login to Docker Hub
         uses: docker/login-action@v4
@@ -41,7 +41,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push image to docker hub
-        run: docker push ${{secrets.DOCKER_USERNAME}}/${{secrets.IMAGE_NAME}}:latest
+        run: docker push ${{secrets.DOCKER_USERNAME}}/${{vars.IMAGE_NAME}}:latest
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.2.0
@@ -50,8 +50,8 @@ jobs:
           username: ${{secrets.EC2_USER}}
           key: ${{secrets.EC2_SSH_KEY}}
           script: |
-            docker pull ${{secrets.DOCKER_USERNAME}}/${{secrets.IMAGE_NAME}}:latest
+            docker pull ${{secrets.DOCKER_USERNAME}}/${{vars.IMAGE_NAME}}:latest
             docker stop ${{secrets.DOCKER_CONTAINER_NAME}}||true
             docker rm ${{secrets.DOCKER_CONTAINER_NAME}}||true
-            docker run -d --name dmart-retail-system --restart unless-stopped -p 8080:8080 ${{secrets.DOCKER_USERNAME}}/${{secrets.IMAGE_NAME}}:latest
+            docker run -d --name dmart-retail-system --restart unless-stopped -p 8080:8080 ${{secrets.DOCKER_USERNAME}}/${{vars.IMAGE_NAME}}:latest
             docker image prune -f
