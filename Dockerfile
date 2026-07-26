@@ -3,19 +3,14 @@ FROM eclipse-temurin:21-jdk-jammy AS builder
 
 WORKDIR /app
 
-# Copy Maven wrapper and pom.xml
-COPY backend/product-service/.mvn .mvn
-COPY backend/product-service/mvnw mvnw
-COPY backend/product-service/pom.xml .
+# Copy the entire product-service to preserve project layout
+COPY backend/product-service /app
 
-# Make mvnw executable
+# Ensure mvnw is executable
 RUN chmod +x ./mvnw
 
-# Copy source code
-COPY backend/product-service/src src
-
-# Build the application
-RUN ./mvnw clean package -DskipTests
+# Build the application using the wrapper (batch mode)
+RUN ./mvnw -f pom.xml clean package -DskipTests -B
 
 # Stage 2: Runtime stage
 FROM eclipse-temurin:21-jre-jammy
@@ -35,6 +30,5 @@ ENV JAVA_OPTS="-Xmx512m -Xms256m"
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD java -cp app.jar org.springframework.boot.loader.JarLauncher --version || exit 1
 
-# Run the application
-ENTRYPOINT ["java"]
-CMD ["-jar", "app.jar"]
+# Run the application with JAVA_OPTS
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
