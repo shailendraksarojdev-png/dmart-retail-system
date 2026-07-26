@@ -47,13 +47,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Download the compiled jar from Job 1 into the target/ folder
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: dmart-jar
-          path: target/
-
       - name: building docker image
         run: docker build -t ${{secrets.DOCKER_USERNAME}}/${{vars.IMAGE_NAME}}:latest .
 
