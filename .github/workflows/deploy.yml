@@ -51,7 +51,7 @@ jobs:
           key: ${{secrets.EC2_SSH_KEY}}
           script: |
             docker pull ${{secrets.DOCKER_USERNAME}}/${{secrets.IMAGE_NAME}}:latest
-            docker stop ${{secrets.DOCKER_CONTAINER_NAME}} || true
-            docker rm ${{secrets.DOCKER_CONTAINER_NAME}} || true
+            docker stop ${{secrets.DOCKER_CONTAINER_NAME}}||true
+            docker rm ${{secrets.DOCKER_CONTAINER_NAME}}||true
             docker run -d --name dmart-retail-system --restart unless-stopped -p 8080:8080 ${{secrets.DOCKER_USERNAME}}/${{secrets.IMAGE_NAME}}:latest
             docker image prune -f
