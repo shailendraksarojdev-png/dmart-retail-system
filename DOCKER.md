@@ -32,7 +32,7 @@ docker build -t dmart-product-service:latest . --no-cache
 
 ---
 
-## 🚀 Running the Docker Container
+## 🚀 Running the Docker Containers
 
 ### Option 1: Run in Foreground (See Logs)
 ```bash
