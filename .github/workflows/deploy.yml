@@ -53,5 +53,15 @@ jobs:
             docker pull ${{secrets.DOCKER_USERNAME}}/${{vars.IMAGE_NAME}}:latest
             docker stop ${{secrets.DOCKER_CONTAINER_NAME}}||true
             docker rm ${{secrets.DOCKER_CONTAINER_NAME}}||true
-            docker run -d --name dmart-retail-system --restart unless-stopped -p 8080:8080 ${{secrets.DOCKER_USERNAME}}/${{vars.IMAGE_NAME}}:latest
+            docker run -d \
+                        --name dmart-retail-system \
+                        --network dmart-retail-system_dmart-network \
+                        --restart unless-stopped \
+                        -e SPRING_DATASOURCE_URL=jdbc:postgresql://dmart-db:5432/dmart \
+                        -e SPRING_DATASOURCE_USERNAME=shailendrasaroj \
+                        -e SPRING_DATASOURCE_PASSWORD=1234 \
+                        -p 8080:8080 \
+                        ${{ secrets.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
             docker image prune -f
+
+ 
