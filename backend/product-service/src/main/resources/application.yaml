@@ -8,7 +8,7 @@ spring:
     password: ${DB_PASSWORD:1234}
     driver-class-name: org.postgresql.Driver
 
-  jjpa:
+  jpa:
     hibernate:
       ddl-auto: validate
     show-sql: true
