@@ -31,37 +31,27 @@ jobs:
       - name: build jar
         run: mvn clean package -DskipTests
 
-      # FIXED: Moved Login BEFORE Docker Build to prevent rate limits
+      - name: building docker image
+        run: docker build -t ${{secrets.DOCKER_USERNAME}}/${{secrets.IMAGE_NAME}}:latest .
+
       - name: Login to Docker Hub
         uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # FIXED: Changed from secrets.IMAGE_NAME to vars.IMAGE_NAME
-      - name: building docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest .
-
-      # FIXED: Changed from secrets.IMAGE_NAME to vars.IMAGE_NAME
       - name: Push image to docker hub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
+        run: docker push ${{secrets.DOCKER_USERNAME}}/${{secrets.IMAGE_NAME}}:latest
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          host: ${{secrets.EC2_HOST}}
+          username: ${{secrets.EC2_USER}}
+          key: ${{secrets.EC2_SSH_KEY}}
           script: |
-            # FIXED: Using vars.IMAGE_NAME and hardcoded container names to prevent syntax errors
-            docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
-            docker stop dmart-retail-system || true
-            docker rm dmart-retail-system || true
-            docker run -d \
-              --name dmart-retail-system \
-              --restart unless-stopped \
-              -p 8080:8080 \
-              ${{ secrets.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
-            sleep 3
-            docker ps
+            docker pull ${{secrets.DOCKER_USERNAME}}/${{secrets.IMAGE_NAME}}:latest
+            docker stop ${{secrets.DOCKER_CONTAINER_NAME}}||true
+            docker rm ${{secrets.DOCKER_CONTAINER_NAME}}||true
+            docker run -d --name dmart-retail-system --restart unless-stopped -p 8080:8080 ${{secrets.DOCKER_USERNAME}}/${{secrets.IMAGE_NAME}}:latest
             docker image prune -f
