@@ -6,8 +6,8 @@ services:
     container_name: dmart-db
     environment:
       POSTGRES_DB: dmart
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: shailendrasaroj
+      POSTGRES_PASSWORD: "1234"
     ports:
       - "5432:5432"
     volumes:
@@ -15,7 +15,7 @@ services:
     networks:
       - dmart-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U shailendrasaroj"]
       interval: 10s
       timeout: 5s
       retries: 5
